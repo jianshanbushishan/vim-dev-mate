@@ -60,7 +60,9 @@ map <buffer> <F10> :DoDebug<cr>
 " buffer operation maps
 nmap <buffer> <leader>cn :cn<cr>
 nmap <buffer> <leader>cp :cp<cr>
-
+set efm=%f(%l\\,%v):\ %t%*[^:]:\ %m,
+            \%trror%*[^:]:\ %m,
+            \%tarning%*[^:]:\ %m
 function QfMakeConv()
    let qflist = getqflist()
    for i in qflist
