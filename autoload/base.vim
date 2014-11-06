@@ -1,5 +1,5 @@
 function base#SetCurDir()
-    cd %:p:h
+    execute "cd ".substitute(expand("%:p:h"), " ", "\\\\ ", "g")
 endfunction
 
 function base#GetRunTime()
