@@ -92,7 +92,7 @@ setlocal nosmarttab
 setlocal noexpandtab
 setlocal makeprg=scons
 
-map <buffer> <F3> :DoAsm0<cr>
+map <buffer> <F6> :DoAsm0<cr>
 map <buffer> <F4> :DoAsm1<cr>
 map <buffer> <F7> :DoBuild<cr>
 map <buffer> <F5> :DoCRun<cr>
@@ -116,5 +116,9 @@ if has("cscope")
     nmap <silent> <buffer> <leader>ci :cs find i <C-R>=expand("<cfile>")<CR>$<CR>
     nmap <silent> <buffer> <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
+
+set efm=%f(%l):\ %t%*[^:]:\ %m,
+            \%trror%*[^:]:\ %m,
+            \%tarning%*[^:]:\ %m
 
 au BufReadPost quickfix nmap q :ccl<cr>
