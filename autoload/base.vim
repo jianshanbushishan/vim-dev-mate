@@ -12,9 +12,10 @@ endfunction
 
 function base#DoInConsole(cmd)
     let cmd = a:cmd
-    let console = "e:\\software\\console2\\Console.exe"
-    if filereadable(console)
-        let curDir = expand("%:p:h") 
+    if has('win32') || has('win64')
+        let console = "e:\\software\\console2\\Console.exe"
+        if filereadable(console)
+            let curDir = expand("%:p:h")
 python << EOF
 import os
 import vim
@@ -25,8 +26,23 @@ cmd = vim.eval("a:cmd")
 cmds = (v_exe, "-reuse", "-t", "cmd", "-d", curDir, "-r", '"/k'+cmd+'"')
 os.spawnv(os.P_DETACH, console, cmds)
 EOF
+        endif
     else
-        exec(":silent !".cmd)
+        let chgpath = 'cd "'.expand("%:p:h").'"'
+        let osacmd = 'osascript 
+\ -e "tell application \"iTerm\""
+\ -e "activate"
+\ -e "tell current window"
+\ -e "create tab with default profile"
+\ -e "tell current tab"
+\ -e "tell current session"
+\ -e "write text \"'.chgpath.'\""
+\ -e "write text \"'.cmd.'\""
+\ -e "end tell"
+\ -e "end tell"
+\ -e "end tell"
+\ -e "end tell"'
+        call system(osacmd)
     endif
 endfunction
 
@@ -50,6 +66,6 @@ function base#DoRunDetach(cmd,...)
         let index = index + 1
     endwhile
     let cmds = a:cmd." ".expand('%').args
-    call DoInConsole(cmds)
+    call base#DoInConsole(cmds)
 endfunction
 
