@@ -13,7 +13,7 @@ endfunction
 function base#DoInConsole(cmd)
     let cmd = a:cmd
     if has('win32') || has('win64')
-        let console = "e:\\software\\console2\\Console.exe"
+        let console = g:console_app
         if filereadable(console)
             let curDir = expand("%:p:h")
 python << EOF
