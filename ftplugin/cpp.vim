@@ -32,6 +32,16 @@ if !exists("*s:GetProg")
     endfunction
 endif
 
+if !exists("*s:DoCRunInConsole(")
+    function s:DoCRunInConsole(...)
+        let prog = s:GetProg()
+        call s:DoBuild()
+        if filereadable(prog)
+            call base#DoInConsole(prog.args)
+        endif
+    endfunction
+endif
+
 if !exists("*s:DoCRun")
     function s:DoCRun(...)
         let prog = s:GetProg()
@@ -83,8 +93,10 @@ endif
 
 command! -buffer -nargs=0 DoBuild              call s:DoBuild()
 command! -buffer -nargs=0 DoCRun               call s:DoCRun()
+command! -buffer -nargs=0 DoCRun2              call s:DoCRunInConsole()
 command! -buffer -nargs=0 DoDebug              call s:DoDebug()
 command! -buffer -nargs=* R                    call s:DoCRun(<f-args>)
+command! -buffer -nargs=* RR                   call s:DoCRunInConsole(<f-args>)
 command! -buffer -nargs=0 DoAsm0               call s:DoAsm(0)
 command! -buffer -nargs=0 DoAsm1               call s:DoAsm(1)
 
@@ -92,10 +104,11 @@ setlocal nosmarttab
 setlocal noexpandtab
 setlocal makeprg=scons
 
-map <buffer> <F3> :DoAsm0<cr>
+map <buffer> <F6> :DoAsm0<cr>
 map <buffer> <F4> :DoAsm1<cr>
 map <buffer> <F7> :DoBuild<cr>
 map <buffer> <F5> :DoCRun<cr>
+map <buffer> <S-F5> :DoCRun2<cr>
 map <buffer> <F10> :DoDebug<cr>
 
 " buffer operation maps
@@ -116,5 +129,9 @@ if has("cscope")
     nmap <silent> <buffer> <leader>ci :cs find i <C-R>=expand("<cfile>")<CR>$<CR>
     nmap <silent> <buffer> <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
 endif
+
+set efm=%f(%l):\ %t%*[^:]:\ %m,
+            \%trror%*[^:]:\ %m,
+            \%tarning%*[^:]:\ %m
 
 au BufReadPost quickfix nmap q :ccl<cr>
