@@ -27,8 +27,8 @@ if !exists("*s:GetProg")
     endfunction
 endif
 
-if !exists("*s:DoCRun")
-    function s:DoCRun(...)
+if !exists("*s:DoRun")
+    function s:DoRun(...)
         let prog = s:GetProg()
         call s:DoBuild()
         if filereadable(prog)
@@ -44,18 +44,15 @@ if !exists("*s:DoCRun")
 endif
 
 command! -buffer -nargs=0 DoBuild              call s:DoBuild()
-command! -buffer -nargs=0 DoCRun               call s:DoCRun()
-command! -buffer -nargs=* R                    call s:DoCRun(<f-args>)
+command! -buffer -nargs=0 DoRun                call s:DoRun()
+command! -buffer -nargs=* R                    call s:DoRun(<f-args>)
 
 setlocal nosmarttab 
 setlocal noexpandtab
 setlocal makeprg=csc
 
-map <buffer> <F3> :DoAsm0<cr>
-map <buffer> <F4> :DoAsm1<cr>
 map <buffer> <F7> :DoBuild<cr>
-map <buffer> <F5> :DoCRun<cr>
-map <buffer> <F10> :DoDebug<cr>
+map <buffer> <F5> :DoRun<cr>
 
 " buffer operation maps
 nmap <buffer> <leader>cn :cn<cr>
