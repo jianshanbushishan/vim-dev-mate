@@ -100,7 +100,7 @@ command! -buffer -nargs=* RR                   call s:DoCRunInConsole(<f-args>)
 command! -buffer -nargs=0 DoAsm0               call s:DoAsm(0)
 command! -buffer -nargs=0 DoAsm1               call s:DoAsm(1)
 
-setlocal nosmarttab 
+setlocal nosmarttab
 setlocal noexpandtab
 setlocal makeprg=scons
 
@@ -135,3 +135,13 @@ set efm=%f(%l):\ %t%*[^:]:\ %m,
             \%tarning%*[^:]:\ %m
 
 au BufReadPost quickfix nmap q :ccl<cr>
+
+function! s:MakeCTags()
+    let l = split(glob("**/*.[h|c|]"))
+    let l += split(glob("**/*.cpp"))
+    call writefile(l, "src.files")
+    call system("ctags -R -L src.files")
+    set tags=tags
+endfunction
+
+command! -nargs=0 MakeTags call s:MakeTags()
