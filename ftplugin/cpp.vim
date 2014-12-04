@@ -136,12 +136,3 @@ set efm=%f(%l):\ %t%*[^:]:\ %m,
 
 au BufReadPost quickfix nmap q :ccl<cr>
 
-function! s:MakeCTags()
-    let l = split(glob("**/*.[h|c|]"))
-    let l += split(glob("**/*.cpp"))
-    call writefile(l, "src.files")
-    call system("ctags -R -L src.files")
-    set tags=tags
-endfunction
-
-command! -nargs=0 MakeTags call s:MakeTags()
