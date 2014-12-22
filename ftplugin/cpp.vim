@@ -115,21 +115,6 @@ map <buffer> <F10> :DoDebug<cr>
 nmap <buffer> <leader>cn :cn<cr>
 nmap <buffer> <leader>cp :cp<cr>
 
-" cscope setting
-if has("cscope")
-    setlocal csto=1
-    setlocal cst
-    setlocal nocsverb
-    nmap <silent> <buffer> <leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
-    nmap <silent> <buffer> <leader>cg :cs find g <C-R>=expand("<cword>")<CR><CR>
-    nmap <silent> <buffer> <leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
-    nmap <silent> <buffer> <leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
-    nmap <silent> <buffer> <leader>ce :cs find e <C-R>=expand("<cword>")<CR><CR>
-    nmap <silent> <buffer> <leader>cf :cs find f <C-R>=expand("<cfile>")<CR><CR>
-    nmap <silent> <buffer> <leader>ci :cs find i <C-R>=expand("<cfile>")<CR>$<CR>
-    nmap <silent> <buffer> <leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
-endif
-
 set efm=%f(%l):\ %t%*[^:]:\ %m,
             \%trror%*[^:]:\ %m,
             \%tarning%*[^:]:\ %m
