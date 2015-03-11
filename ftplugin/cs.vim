@@ -60,13 +60,16 @@ nmap <buffer> <leader>cp :cp<cr>
 set efm=%f(%l\\,%v):\ %t%*[^:]:\ %m,
             \%trror%*[^:]:\ %m,
             \%tarning%*[^:]:\ %m
-function QfMakeConv()
-   let qflist = getqflist()
-   for i in qflist
-      let i.text = iconv(i.text, "cp936", "utf-8")
-   endfor
-   call setqflist(qflist)
-endfunction
 
-au QuickfixCmdPost make call QfMakeConv()
+if !exists("*s:QfMakeConv(")
+    function s:QfMakeConv()
+       let qflist = getqflist()
+       for i in qflist
+          let i.text = iconv(i.text, "cp936", "utf-8")
+       endfor
+       call setqflist(qflist)
+    endfunction
+endif
+
+au QuickfixCmdPost make call s:QfMakeConv()
 au BufReadPost quickfix nmap q :ccl<cr>
