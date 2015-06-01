@@ -43,9 +43,23 @@ if !exists("*s:DoRun")
     endfunction
 endif
 
+if !exists("*s:DoDAsm")
+    function s:DoDAsm()
+        let prog = s:GetProg()
+        call s:DoBuild()
+        if filereadable(prog)
+            let f = expand("%:r").'.il'
+            let cmd = "ildasm ".prog." /out:".f
+            call system(cmd)
+            exec("e ".f)
+        endif
+    endfunction
+endif
+
 command! -buffer -nargs=0 DoBuild              call s:DoBuild()
 command! -buffer -nargs=0 DoRun                call s:DoRun()
 command! -buffer -nargs=* R                    call s:DoRun(<f-args>)
+command! -buffer -nargs=0 DoDAsm               call s:DoDAsm()
 
 setlocal nosmarttab 
 setlocal noexpandtab
@@ -53,6 +67,7 @@ setlocal makeprg=csc
 
 map <buffer> <F7> :DoBuild<cr>
 map <buffer> <F5> :DoRun<cr>
+map <buffer> <F4> :DoDAsm<cr>
 
 " buffer operation maps
 nmap <buffer> <leader>cn :cn<cr>
