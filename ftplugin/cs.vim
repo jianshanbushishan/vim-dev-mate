@@ -48,7 +48,7 @@ if !exists("*s:DoDAsm")
         let prog = s:GetProg()
         call s:DoBuild()
         if filereadable(prog)
-            let f = expand("%:r").'.il'
+            let f = expand("%:r").'.msil'
             let cmd = "ildasm ".prog." /out:".f
             call system(cmd)
             exec("e ".f)
